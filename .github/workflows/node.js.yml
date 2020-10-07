@@ -1,44 +1,35 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+name: Share data between backend and frontend
 
-name: Node.js CI
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
-  build:
-
+  job_1:
+    name: Running the backend
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Use backend
-    - uses: ./backend
-    - run: cd backend
-    - run: pwd
-    - run: ls -l
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-    - name: Use frontend
-    - uses: ./frontend
-    - run: cd frontend
-      run: pwd
-      run: ls -l
-      run: npm ci
-      run: npm run build --if-present
-      run: npm test
+      - shell: bash
+        run: |
+          ./backend
+      - name: Uploads backend code
+        uses: actions/upload-artifact@v2
+        with:
+          name: backend code
+          path: ./backend
 
-    
+  job_2:
+    name: Running the frontend
+    needs: job_1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download backend results for job 1
+        uses: actions/download-artifact@v2
+        with:
+          name: backend code
+      - shell: bash
+        run: |
+          ./frontend
+      - name: Uploads frontend code
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend code
+          path: ./fontend
