@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - shell: bash
-        run: |
-          backend/.github/workflows/node.js.yml
       - name: Uploads backend code
         uses: actions/upload-artifact@v2
         with:
@@ -26,8 +24,6 @@ jobs:
         with:
           name: backend code
       - shell: bash
-        run: |
-            frontend/.github/workflow/node.js.yml
       - name: Uploads frontend code
         uses: actions/upload-artifact@v2
         with:
