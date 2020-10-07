@@ -1,37 +1,30 @@
+
 name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  job_1:
-    name: Running the backend
+  build:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        path: backend/.github/workflows/backend
     - run: cd backend
     - run: pwd
     - run: ls -l
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-
-  job_2:
-    name: Running the frontend
-    needs: job_1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download backend results for job 1
-        uses: actions/download-artifact@v2
-        with:
-          name: backend code
-      - shell: bash
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: frontend code
-          path: frontend/.github/workflow/node.js.yml
+    - run: cd backend;npm ci
+    - run: cd backend;npm run build --if-present
+    - run: cd backend;npm test
