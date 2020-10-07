@@ -25,20 +25,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Use backend
-    - uses: ./backend
-    - run: cd backend
-    - run: pwd
-    - run: ls -l
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      uses: ./backend
+      run: cd backend
+      run: pwd
+      run: ls -l
+      run: npm ci
+      run: npm run build --if-present
+      run: npm test
     - name: Use frontend
-    - uses: ./frontend
-    - run: cd frontend
-    - run: pwd
-    - run: ls -l
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      uses: ./frontend
+      run: cd frontend
+      run: pwd
+      run: ls -l
+      run: npm ci
+      run: npm run build --if-present
+      run: npm test
 
     
