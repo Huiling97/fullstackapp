@@ -1,4 +1,4 @@
-name: Share data between backend and frontend
+name: Node.js CI
 
 on: [push]
 
@@ -7,12 +7,18 @@ jobs:
     name: Running the backend
     runs-on: ubuntu-latest
     steps:
-      - shell: bash
-      - name: Uploads backend code
-        uses: actions/upload-artifact@v2
-        with:
-          name: backend code
-          path: backend/.github/workflows/node.js.yml
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        path: backend/.github/workflows/backend
+    - run: cd backend
+    - run: pwd
+    - run: ls -l
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
 
   job_2:
     name: Running the frontend
@@ -24,7 +30,7 @@ jobs:
         with:
           name: backend code
       - shell: bash
-      - name: Uploads frontend code
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
           name: frontend code
