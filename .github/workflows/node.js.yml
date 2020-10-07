@@ -9,12 +9,12 @@ jobs:
     steps:
       - shell: bash
         run: |
-          fullstackapp/backend/.github/workflow/node.js.yml
+          backend/.github/workflows/node.js.yml
       - name: Uploads backend code
         uses: actions/upload-artifact@v2
         with:
           name: backend code
-          path: fullstackapp/backend/.github/workflow/node.js.yml
+          path: backend/.github/workflows/node.js.yml
 
   job_2:
     name: Running the frontend
@@ -27,9 +27,9 @@ jobs:
           name: backend code
       - shell: bash
         run: |
-          fullstackapp/frontend/.github/workflow/node.js.yml
+            frontend/.github/workflow/node.js.yml
       - name: Uploads frontend code
         uses: actions/upload-artifact@v2
         with:
           name: frontend code
-          path: fullstackapp/frontend/.github/workflow/node.js.yml
+          path: frontend/.github/workflow/node.js.yml
